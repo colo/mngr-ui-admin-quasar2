@@ -1,0 +1,48 @@
+{
+  "name": "mngr-ui-admin-frontend",
+  "version": "0.0.1",
+  "description": "A Quasar Framework app",
+  "productName": "Manager UI",
+  "cordovaId": "org.cordova.quasar.app",
+  "capacitorId": "",
+  "author": "Luciano Bueno <glamero@gmail.com>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue src",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.18.1",
+    "debug": "^4.1.1",
+    "dygraphs": "^2.1.0",
+    "js-pipeline": "git+https://github.com/colo/js-pipeline.git",
+    "mngr-ui-admin-charts": "git+https://github.com/colo/mngr-ui-admin-charts.git",
+    "moment": "^2.24.0",
+    "node-app-socket.io-client": "git+https://github.com/colo/node-app-socket.io-client.git",
+    "node-tabular-data": "git+https://github.com/colo/node-tabular-data.git",
+    "quasar": "^1.0.0",
+    "vue-i18n": "^8.0.0",
+    "vue-observe-visibility": "^0.4.6",
+    "vue-responsive-grid-layout": "^1.1.8",
+    "vuedraggable": "^2.23.2",
+    "vuequery": "^1.0.0",
+    "vuex-persist": "^2.1.1"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.0.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.10.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-vue": "^5.0.0"
+  },
+  "engines": {
+    "node": ">= 8.9.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  },
+  "browserslist": [
+    "last 1 version, not dead, ie >= 11"
+  ]
+}
