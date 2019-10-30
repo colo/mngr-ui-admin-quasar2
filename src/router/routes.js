@@ -23,22 +23,22 @@ const routes = [
         component: () => import('@apps/munin/index'),
         meta: {
           breadcrumb: { label: 'Munin', icon: 'widgets', app: 'munin' }
-        }
+        },
 
-        // children: [
-        //   {
-        //     path: ':host',
-        //     name: 'Host',
-        //     component: () => import('@apps/munin/components/host'),
-        //     meta: {
-        //       breadcrumb: { label: 'Munin Host', icon: 'widgets', app: 'munin' }
-        //     }
-        //   }
-        //   // {
-        //   //   path: 'profile',
-        //   //   component: () => import('pages/user-profile')
-        //   // }
-        // ]
+        children: [
+          {
+            path: ':host',
+            name: 'Host',
+            component: () => import('@apps/munin/pages/host'),
+            meta: {
+              breadcrumb: { label: 'Munin Host', icon: 'widgets', app: 'munin' }
+            }
+          }
+          // {
+          //   path: 'profile',
+          //   component: () => import('pages/user-profile')
+          // }
+        ]
       }
     ]
   }

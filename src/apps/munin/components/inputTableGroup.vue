@@ -1,10 +1,24 @@
 <template>
 
-  <Widget
-  >
+  <q-card>
+    <q-card-section>
+      <div class="text-h6">
+        {{group.index_type}}
+        <router-link :to="'/munin/'+group[group.index_type]">
+           {{group[group.index_type]}}:
+        </router-link>
+        <span class="text-success text-nowrap">
+          {{group.count}}
+        </span>
+      </div>
+      <div class="text-subtitle2">Status: <strong>Live</strong></div>
+    </q-card-section>
+
+  <!-- <Widget
+  > -->
   <!-- :title="'<h6>'+group.index_type+' '+group[group.index_type]+': <span class=\'text-success text-nowrap\'>'+group.count+'</span></h6>'" -->
   <!-- customHeader -->
-  <h6>
+  <!-- <h6>
   {{group.index_type}}
   <router-link :to="'/munin/'+group[group.index_type]">
      {{group[group.index_type]}}:
@@ -12,9 +26,10 @@
   <span class="text-success text-nowrap">
     {{group.count}}
   </span>
-  </h6>
+  </h6> -->
     <!-- <q-card class="my-card">
-      <q-card-section> -->
+       -->
+     <q-card-section>
        <div class="q-pa-md">
        <div class="row">
 
@@ -32,19 +47,33 @@
           </stats-card>
           </div> -->
           <div class="col-12 col-md-3" v-if="group.index_type !== 'host'">
-            <stats-card title="Hosts"
+            <q-card class="my-card">
+              <q-card-actions align="around">
+                <q-btn flat round color="red" icon="favorite" />
+                <q-btn flat round color="teal" icon="bookmark" />
+                <q-btn flat round color="primary" icon="share" />
+              </q-card-actions>
+            </q-card>
+            <!-- <stats-card title="Hosts"
                         type="gradient-green"
                         :sub-title="''+group.hosts.length"
                         icon="glyphicon glyphicon-hdd"
             >
-            <!-- class="mb-4 mb-xl-0" -->
+
               <template slot="footer">
                   <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
                   <span class="text-nowrap">{{moment(group.range[1]).fromNow()}}</span>
               </template>
-          </stats-card>
+          </stats-card> -->
           </div>
           <div class="col-12 col-md-3" v-if="group.index_type !== 'path'">
+            <q-card class="my-card">
+              <q-card-actions align="around">
+                <q-btn flat round color="red" icon="favorite" />
+                <q-btn flat round color="teal" icon="bookmark" />
+                <q-btn flat round color="primary" icon="share" />
+              </q-card-actions>
+            </q-card>
             <stats-card title="Paths"
                         type="gradient-green"
                         :sub-title="''+group.paths.length"
@@ -143,9 +172,9 @@
           </div> -->
         </div>
       </div>
-      <!-- </q-card-section>
-    </q-card> -->
-  </Widget>
+    </q-card-section>
+  </q-card>
+  <!-- </Widget> -->
 </template>
 
 <script>
@@ -171,15 +200,15 @@ const debug = Debug('apps:munin:components:Group')
 //
 // let moment = require('moment')
 
-import Widget from '@skins/flatlogic/lightblue/components/Widget/Widget'
-import StatsCard from '@apps/munin/components/creativetim/argon/StatsCard'
+// import Widget from '@skins/flatlogic/lightblue/components/Widget/Widget'
+// import StatsCard from '@apps/munin/components/creativetim/argon/StatsCard'
 
 export default {
   // mixins: [DataSourcesMixin],
 
   name: 'InputTableGroup',
   // components: { GridView, Widget, StatsCard },
-  components: { Widget, StatsCard },
+  // components: { Widget, StatsCard },
 
   // pipelines: {},
   props: {

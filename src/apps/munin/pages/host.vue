@@ -1,14 +1,17 @@
 <template>
-  <div>
-  <template v-for="(plugin, name) in plugins">
-    <b-row :key="name">
-      <b-col lg="12">
-        <munin-dygraph :id="name" :data="plugin" :config="plugins_config[name]"/>
-        <!-- :feed="(tables_feeds[`${table}`]) ? tables_feeds[`${table}`] : []" -->
-      </b-col>
-    </b-row>
-  </template>
-</div>
+
+  <div class="q-pa-md">
+    <template v-for="(plugin, name) in plugins">
+
+      <div class="q-pa-md row items-start q-gutter-md" :key="name" v-if="plugins_config[name]">
+        <div class="col">
+          <munin-dygraph :id="name" :data="plugin" :config="plugins_config[name]"/>
+        </div>
+      </div>
+
+    </template>
+
+  </div>
 </template>
 
 <script>
@@ -24,8 +27,8 @@ const debug = Debug('apps:munin:components:host')
 
 let moment = require('moment')
 
-import Widget from '@skins/flatlogic/lightblue/components/Widget/Widget'
-import StatsCard from '@apps/root/components/creativetim/argon/StatsCard'
+// import Widget from '@skins/flatlogic/lightblue/components/Widget/Widget'
+// import StatsCard from '@apps/root/components/creativetim/argon/StatsCard'
 
 import DataSourcesMixin from '@components/mixins/dataSources'
 
@@ -34,12 +37,14 @@ import Pipeline from '@apps/munin/pipelines/index'
 
 const MAX_FEED_DATA = 10
 
+import MuninDygraph from '../components/muninDygraph'
+
 export default {
   mixins: [DataSourcesMixin],
 
   name: 'Host',
-  // components: { GridView, Widget, StatsCard },
-  components: { Widget, StatsCard },
+  components: { MuninDygraph },
+  // components: { Widget, StatsCard },
 
   config_component_req: {
     params: {

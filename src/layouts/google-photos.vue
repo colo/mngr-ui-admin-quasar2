@@ -81,7 +81,7 @@
         </q-toolbar>
 
         <q-list padding>
-          <q-item v-for="link in links1" :key="link.text" clickable class="GPL__drawer-item">
+          <q-item v-for="link in links1" :key="link.text" clickable class="GPL__drawer-item" :to="link.to">
             <q-item-section avatar>
               <q-icon :name="link.icon" />
             </q-item-section>
@@ -185,7 +185,7 @@ export default {
       search: '',
       storage: 0.26,
       links1: [
-        { icon: 'home', text: 'Home' }
+        { icon: 'home', text: 'Home', to: '/' }
         // { icon: 'assistant', text: 'Assistant' },
         // { icon: 'people', text: 'Sharing' },
         // { icon: 'book', text: 'Photo books' }
