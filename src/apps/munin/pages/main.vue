@@ -35,7 +35,7 @@
 import Vue from 'vue'
 
 import * as Debug from 'debug'
-const debug = Debug('apps:munin:pages:flatlogic:lightblue:Dashboard:Dashboard')
+const debug = Debug('apps:munin:pages:main')
 
 import DataSourcesMixin from '@components/mixins/dataSources'
 
@@ -87,8 +87,12 @@ export default {
 
                   Object.each(data.munin, function (group, index) {
                     components[group.metadata.host] = Object.clone(vm.$options.per_host_component)
-                    components[group.metadata.host].source.requests.once[0].params.range = 'posix ' + (group.metadata.timestamp - MINUTE) + '-' + group.metadata.timestamp + '/*'
-                    components[group.metadata.host].source.requests.once[0].params.query.filter.metadata.host = group.metadata.host
+                    // components[group.metadata.host].source.requests.once[0].params.range = 'posix ' + (group.metadata.timestamp - MINUTE) + '-' + group.metadata.timestamp + '/*'
+                    // components[group.metadata.host].source.requests.once[0].params.query.filter.metadata.host = group.metadata.host
+                    Array.each(components[group.metadata.host].source.requests.once, function (component, index) {
+                      component.params.range = 'posix ' + (group.metadata.timestamp - MINUTE) + '-' + group.metadata.timestamp + '/*'
+                      component.params.query.filter.metadata.host = group.metadata.host
+                    })
                   })
 
                   vm.components = components
@@ -156,35 +160,70 @@ export default {
     source: {
       requests: {
         // TEST register periodical
-        once: [{
-          params: {
-            path: 'all',
-            // range: 'posix ' + (Date.now() - (5 * MINUTE)) + '-' + Date.now() + '/*',
-            range: undefined,
-            query: {
-              from: 'munin',
-              index: 'host',
-              'filter': { 'metadata': { 'host': undefined } }
+        once: [
+          {
+            params: {
+              path: 'all',
+              // range: 'posix ' + (Date.now() - (5 * MINUTE)) + '-' + Date.now() + '/*',
+              range: undefined,
+              query: {
+                from: 'munin',
+                index: 'host',
+                'filter': { 'metadata': { 'host': undefined } }
+              }
+
+            },
+            callback: function (data, metadata, key, vm) {
+              // if (data && data.munin && data.munin.length === 1) {
+              debug('GROUP DATA %o', data, metadata)
+              // vm.groups.push(data.munin[0])
+              let host = data.munin[0].host
+
+              vm.$set(vm.groups, host, data.munin[0])
+              let periodical = Object.clone(vm.$options.per_host_component_periodical)
+
+              periodical.host = host
+              vm.$set(vm.components, host + '_periodical', periodical)
+
+              vm.__bind_components_to_sources(vm.components)
+              vm.$options.pipelines['input.munin'].get_input_by_id('input.munin').conn_pollers[0].options.requests = vm.__components_sources_to_requests(vm.components)
+              vm.$options.pipelines['input.munin'].get_input_by_id('input.munin').conn_pollers[0].fireEvent('onPeriodicalRequestsUpdated')
             }
-
           },
-          callback: function (data, metadata, key, vm) {
-            // if (data && data.munin && data.munin.length === 1) {
-            debug('GROUP DATA %o', data, metadata)
-            // vm.groups.push(data.munin[0])
-            let host = data.munin[0].host
+          {
+            params: {
+              path: 'all',
+              range: undefined,
+              query: {
+                'from': 'munin',
+                'index': 'host',
 
-            vm.$set(vm.groups, host, data.munin[0])
-            let periodical = Object.clone(vm.$options.per_host_component_periodical)
+                'q': [
+                  { 'config': 'graph' }
+                ],
+                'aggregation': 'distinct',
+                'filter': { 'metadata': { 'host': undefined } }
+              }
 
-            periodical.host = host
-            vm.$set(vm.components, host + '_periodical', periodical)
-
-            vm.__bind_components_to_sources(vm.components)
-            vm.$options.pipelines['input.munin'].get_input_by_id('input.munin').conn_pollers[0].options.requests = vm.__components_sources_to_requests(vm.components)
-            vm.$options.pipelines['input.munin'].get_input_by_id('input.munin').conn_pollers[0].fireEvent('onPeriodicalRequestsUpdated')
+            },
+            callback: function (data, metadata, key, vm) {
+              // if (data && data.munin && data.munin.length === 1) {
+              debug('GRAPHs %o', data, metadata)
+              // // vm.groups.push(data.munin[0])
+              // let host = data.munin[0].host
+              //
+              // vm.$set(vm.groups, host, data.munin[0])
+              // let periodical = Object.clone(vm.$options.per_host_component_periodical)
+              //
+              // periodical.host = host
+              // vm.$set(vm.components, host + '_periodical', periodical)
+              //
+              // vm.__bind_components_to_sources(vm.components)
+              // vm.$options.pipelines['input.munin'].get_input_by_id('input.munin').conn_pollers[0].options.requests = vm.__components_sources_to_requests(vm.components)
+              // vm.$options.pipelines['input.munin'].get_input_by_id('input.munin').conn_pollers[0].fireEvent('onPeriodicalRequestsUpdated')
+            }
           }
-        }]
+        ]
       }
     }
   },

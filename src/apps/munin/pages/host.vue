@@ -21,7 +21,7 @@
 // import Vue from 'vue'
 
 import * as Debug from 'debug'
-const debug = Debug('apps:munin:components:host')
+const debug = Debug('apps:munin:pages:host')
 
 //
 
